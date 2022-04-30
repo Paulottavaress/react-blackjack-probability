@@ -1,11 +1,13 @@
+import React, { useContext } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
-  Route 
+  Route
 } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import LiveGame from './pages/LiveGame';
 import LiveGameState from './context/livegame/LiveGameState';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 const App = () => {
@@ -16,7 +18,12 @@ const App = () => {
           <Navbar />
           <div className="container">
             <Routes>
-              <Route path='/' element={<LiveGame />}></Route>
+              <Route path='/' element={
+                <div>
+                  <LiveGame />
+                </div>
+              }>
+              </Route>
             </Routes>
           </div>
         </div>

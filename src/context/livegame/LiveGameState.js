@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import LiveGameContext from './liveGameContext';
 import LiveGameReducer from './liveGameReducer';
 import {
@@ -7,7 +7,8 @@ import {
   CREATE_DECKS,
   REMOVE_SUIT,
   ADD_SUIT_TO_PLAYERS_HAND,
-  ADD_SUIT_TO_DEALERS_HAND
+  ADD_SUIT_TO_DEALERS_HAND,
+  UPDATE_DEALERS_SHOE_SUIT_GROUPS
 } from '../types';
 
 const LiveGameState = props => {
@@ -16,28 +17,41 @@ const LiveGameState = props => {
     currentRound: 0,
     numberOfDecks: 0,
     deck: ['Ace', 'Ace', 'Ace', 'Ace', '2', '2', '2', '2', '3', '3', '3', '3', '4', '4', '4', '4', '5', '5', '5', '5', '6', '6', '6', '6', '7', '7', '7', '7', '8', '8', '8', '8', '9', '9', '9', '9', '10', '10', '10', '10', 'Jack', 'Jack', 'Jack', 'Jack', 'Queen', 'Queen', 'Queen', 'Queen', 'King', 'King', 'King', 'King'], // (OLD NOTE) This deck will no longer exist
-    dealersShoe: [],
     playersHand: [],
-    dealersHand: []
+    dealersHand: [],
+    dealersShoe: [],
+    dealersShoeSuitGroups: {
+      ace: [],
+      two: [],
+      three: [],
+      four: [],
+      five: [],
+      six: [],
+      seven: [],
+      eight: [],
+      nine: [],
+      ten: [],
+      jack: [],
+      queen: [],
+      king: [],
+      worthTen: []
+    }
   };
 
   const [state, dispatch] = useReducer(LiveGameReducer, initialState);
 
-  // startGame
   const startGame = () => {
     dispatch({
       type: START_GAME
     });
   }
 
-  // resetGameStatus
   const resetGameStatus = () => {
     dispatch({
       type: RESET_GAME_STATUS
     });
   }
 
-  // createDecks
   const createDecks = (numberOfDecks) => {
     const dealersShoe = [];
 
@@ -57,7 +71,6 @@ const LiveGameState = props => {
     });
   }
 
-  // removeSuit
   const removeSuit = (parsedSuit) => {
     dispatch({
       type: REMOVE_SUIT,
@@ -65,7 +78,6 @@ const LiveGameState = props => {
     });   
   }
 
-  // addSuitToPlayersHand
   const addSuitToPlayersHand = (parsedSuit) => {
     dispatch({
       type: ADD_SUIT_TO_PLAYERS_HAND,
@@ -73,13 +85,18 @@ const LiveGameState = props => {
     });
   }
 
-  // addSuitToDealersHand
   const addSuitToDealersHand = (parsedSuit) => {
     dispatch({
       type: ADD_SUIT_TO_DEALERS_HAND,
       payload: parsedSuit
     });
   }
+
+  useEffect(() => {
+    dispatch({
+      type: UPDATE_DEALERS_SHOE_SUIT_GROUPS
+    });
+  }, [state.dealersShoe]);
 
   return (
     <LiveGameContext.Provider
@@ -88,12 +105,10 @@ const LiveGameState = props => {
         currentRound: state.currentRound,
         numberOfDecks: state.numberOfDecks,
         deck: state.deck,
-        dealersShoe: state.dealersShoe,
-        suitToBeRemoved: state.suitToBeRemoved,
         playersHand: state.playersHand,
-        suitToPlayersHand: state.suitToPlayersHand,
         dealersHand: state.dealersHand,
-        suitToDealersHand: state.suitToDealersHand,
+        dealersShoe: state.dealersShoe,
+        dealersShoeSuitGroups: state.dealersShoeSuitGroups,
         startGame,
         resetGameStatus,
         createDecks,

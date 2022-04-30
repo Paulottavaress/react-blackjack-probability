@@ -4,7 +4,8 @@ import {
   CREATE_DECKS,
   REMOVE_SUIT,
   ADD_SUIT_TO_PLAYERS_HAND,
-  ADD_SUIT_TO_DEALERS_HAND
+  ADD_SUIT_TO_DEALERS_HAND,
+  UPDATE_DEALERS_SHOE_SUIT_GROUPS
 } from '../types';
 
 const LiveGameReducer = (state, action) => {
@@ -50,6 +51,26 @@ const LiveGameReducer = (state, action) => {
           }
         })
       };
+    case UPDATE_DEALERS_SHOE_SUIT_GROUPS:
+      return {
+        ...state,
+        dealersShoeSuitGroups: {
+          ace: state.dealersShoe.filter(suit => { return suit === 'Ace' }),
+          two: state.dealersShoe.filter(suit => { return suit === '2' }),
+          three: state.dealersShoe.filter(suit => { return suit === '3' }),
+          four: state.dealersShoe.filter(suit => { return suit === '4' }),
+          five: state.dealersShoe.filter(suit => { return suit === '5' }),
+          six: state.dealersShoe.filter(suit => { return suit === '6' }),
+          seven: state.dealersShoe.filter(suit => { return suit === '7' }),
+          eight: state.dealersShoe.filter(suit => { return suit === '8' }),
+          nine: state.dealersShoe.filter(suit => { return suit === '9' }),
+          ten: state.dealersShoe.filter(suit => { return suit === '10' }),
+          jack: state.dealersShoe.filter(suit => { return suit === 'Jack' }),
+          queen: state.dealersShoe.filter(suit => { return suit === 'Queen' }),
+          king: state.dealersShoe.filter(suit => { return suit === 'King' }),
+          worthTen: state.dealersShoe.filter(suit => { return suit === '10' || suit === 'Jack' || suit === 'Queen' || suit === 'King' })
+        }
+      }
     default:
       return state;
   }
